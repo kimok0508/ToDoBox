@@ -64,6 +64,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="ToDo List" id="g0s-yf-Ksl">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="O6X-SY-Qn6">
+                            <connections>
+                                <action selector="editButtonDidTap" destination="BYZ-38-t0r" id="Mbj-Tw-wxj"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4o4-AA-VMP">
                             <connections>
                                 <segue destination="7nF-wc-7RQ" kind="show" id="VAE-x0-pLD"/>
@@ -71,6 +76,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="O6X-SY-Qn6" id="5eP-Gf-E39"/>
                         <outlet property="tableView" destination="JuO-YN-z96" id="Imq-zt-1rM"/>
                     </connections>
                 </viewController>
