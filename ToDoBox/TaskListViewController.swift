@@ -19,25 +19,25 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var tasks : [Task] = []{
         didSet{
+            self.editButton.isEnabled = !tasks.isEmpty
             self.saveTasks()
         }
     }
     
     @IBAction func editButtonDidTap(){
         self.navigationItem.leftBarButtonItem = self.doneButton
-        self.doneButton.target = self
         self.tableView.setEditing(true, animated: true)
     }
     
     func doneButtonDidTap(){
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
-        self.editButton.target = self
+        self.navigationItem.leftBarButtonItem = self.editButton
         self.tableView.setEditing(false, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        doneButton.target = self
         self.title = "ToDo List"
         loadTasks()
     }
@@ -45,9 +45,7 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadTasks(){
         guard
             let savedDictionaries = UserDefaults.standard.array(forKey : "tasks") as? [[String : Any?]]
-            else{
-                return
-        }
+        else{ return }
         
         self.tasks = savedDictionaries.flatMap{ dict -> Task? in
             return Task(dictionary: dict)
@@ -119,6 +117,10 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         self.tasks.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        if self.tasks.isEmpty{
+            self.doneButtonDidTap()
+        }
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
